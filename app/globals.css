@@ -28,19 +28,18 @@ body {
   font-size: 14px;
   line-height: 1.5;
   min-height: 100vh;
+  /* Prevent horizontal scroll globally */
+  overflow-x: hidden;
 }
  
-/* ── Inputs ──────────────────────────────────────────────────────────────────── */
 input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.5); }
 input::placeholder, textarea::placeholder { color: var(--border-mid); }
 select option { background: #1e293b; }
  
-/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 3px; }
  
-/* ── Animations ──────────────────────────────────────────────────────────────── */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -85,7 +84,7 @@ select option { background: #1e293b; }
 }
 .invoice-table-row:hover { background: #0f1f38; }
  
-/* Invoice card (mobile — hidden on desktop) */
+/* Mobile card — hidden on desktop */
 .invoice-card { display: none; }
  
 /* ── Form grid ───────────────────────────────────────────────────────────────── */
@@ -109,10 +108,14 @@ select option { background: #1e293b; }
   flex-wrap: wrap;
 }
  
-/* ── Navbar ──────────────────────────────────────────────────────────────────── */
-.nav-brand   { display: block; }
-.nav-tabs    { display: flex; }
-.nav-new-btn { display: block; }
+/* ── Navbar — desktop defaults ───────────────────────────────────────────────── */
+.nav-tabs-mobile  { display: none !important; }
+.nav-tabs-desktop { display: flex !important; }
+.btn-short-text   { display: none !important; }
+.btn-full-text    { display: inline !important; }
+.nav-signout-text { display: inline !important; }
+.nav-signout-icon { display: none !important; }
+.nav-user-text    { display: block !important; }
  
 /* ── Dashboard alert ─────────────────────────────────────────────────────────── */
 .overdue-alert {
@@ -132,10 +135,14 @@ select option { background: #1e293b; }
   }
   .invoice-table-header,
   .invoice-table-row {
-    /* Drop description + actions columns */
     grid-template-columns: 1.4fr 1fr 100px 110px 100px;
   }
   .col-desc { display: none !important; }
+ 
+  /* Hide user text on tablet too — just avatar + sign out */
+  .nav-user-text    { display: none !important; }
+  .nav-signout-text { display: none !important; }
+  .nav-signout-icon { display: inline !important; }
 }
  
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -144,16 +151,22 @@ select option { background: #1e293b; }
 @media (max-width: 640px) {
   :root { --page-pad: 14px; }
  
+  /* ── Navbar: move tabs to a second row ──────────────────────────────────── */
+  .nav-tabs-desktop { display: none !important; }
+  .nav-tabs-mobile  { display: flex !important; }
+ 
+  /* Shrink "+ New Invoice" to just "+" */
+  .btn-full-text  { display: none !important; }
+  .btn-short-text { display: inline !important; }
+ 
+  /* Stat cards: 2 per row */
   .stat-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     margin-bottom: 16px;
   }
  
-  /* Hide user name/email on mobile — keep avatar + sign out only */
-  .nav-user-name { display: none !important; }
- 
-  /* ── Invoice table → cards ──────────────────────────────────────────────── */
+  /* Invoice table → cards */
   .invoice-table-header { display: none !important; }
   .invoice-table-row    { display: none !important; }
   .invoice-card {
@@ -165,15 +178,22 @@ select option { background: #1e293b; }
   }
   .invoice-card:hover { background: #0f1f38; }
  
+  /* Form: single column */
   .form-row { grid-template-columns: 1fr; }
  
-  .nav-brand { font-size: 16px !important; padding-right: 14px !important; margin-right: 10px !important; }
- 
-  .filter-row { flex-direction: column; align-items: stretch; }
+  /* Filter: vertical stack, pills scroll horizontally */
+  .filter-row   { flex-direction: column; align-items: stretch; }
   .filter-pills { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; scrollbar-width: none; }
   .filter-pills::-webkit-scrollbar { display: none; }
  
+  /* Modal: tighter on small screens */
   .modal-inner { border-radius: 14px !important; padding: 20px !important; }
  
-  .toast { left: 14px !important; right: 14px !important; bottom: 16px !important; text-align: center; }
+  /* Toast: full width at bottom */
+  .toast {
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 16px !important;
+    text-align: center;
+  }
 }
