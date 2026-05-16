@@ -1,0 +1,179 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
+:root {
+  --bg:           #060d1a;
+  --bg-card:      #0b1528;
+  --bg-input:     #0f172a;
+  --bg-raised:    #1e293b;
+  --border:       #1e293b;
+  --border-mid:   #334155;
+  --text:         #f1f5f9;
+  --text-mid:     #cbd5e1;
+  --text-muted:   #64748b;
+  --accent:       #6366f1;
+  --accent-lt:    #818cf8;
+  --font-display: 'DM Serif Display', serif;
+  --font-body:    'Sora', sans-serif;
+  --page-pad:     24px;
+}
+ 
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+ 
+/* ── Inputs ──────────────────────────────────────────────────────────────────── */
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.5); }
+input::placeholder, textarea::placeholder { color: var(--border-mid); }
+select option { background: #1e293b; }
+ 
+/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 3px; }
+ 
+/* ── Animations ──────────────────────────────────────────────────────────────── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+/* ── Page layout ─────────────────────────────────────────────────────────────── */
+.page-main {
+  padding: var(--page-pad);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+ 
+/* ── Stat cards grid ─────────────────────────────────────────────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+ 
+/* ── Invoice table (desktop) ─────────────────────────────────────────────────── */
+.invoice-table-header,
+.invoice-table-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 100px 110px 130px;
+  gap: 12px;
+  padding: 12px 20px;
+  align-items: center;
+}
+.invoice-table-header {
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.invoice-table-row {
+  padding: 14px 20px;
+  border-bottom: 1px solid #111d30;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.invoice-table-row:hover { background: #0f1f38; }
+ 
+/* Invoice card (mobile — hidden on desktop) */
+.invoice-card { display: none; }
+ 
+/* ── Form grid ───────────────────────────────────────────────────────────────── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+ 
+/* ── Filter pills row ────────────────────────────────────────────────────────── */
+.filter-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+ 
+/* ── Navbar ──────────────────────────────────────────────────────────────────── */
+.nav-brand   { display: block; }
+.nav-tabs    { display: flex; }
+.nav-new-btn { display: block; }
+ 
+/* ── Dashboard alert ─────────────────────────────────────────────────────────── */
+.overdue-alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+ 
+/* ══════════════════════════════════════════════════════════════════════════════
+   TABLET  (≤ 900px)
+══════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .invoice-table-header,
+  .invoice-table-row {
+    /* Drop description + actions columns */
+    grid-template-columns: 1.4fr 1fr 100px 110px 100px;
+  }
+  .col-desc { display: none !important; }
+}
+ 
+/* ══════════════════════════════════════════════════════════════════════════════
+   MOBILE  (≤ 640px)
+══════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  :root { --page-pad: 14px; }
+ 
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+ 
+  /* Hide user name/email on mobile — keep avatar + sign out only */
+  .nav-user-name { display: none !important; }
+ 
+  /* ── Invoice table → cards ──────────────────────────────────────────────── */
+  .invoice-table-header { display: none !important; }
+  .invoice-table-row    { display: none !important; }
+  .invoice-card {
+    display: block;
+    padding: 14px 16px;
+    border-bottom: 1px solid #111d30;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .invoice-card:hover { background: #0f1f38; }
+ 
+  .form-row { grid-template-columns: 1fr; }
+ 
+  .nav-brand { font-size: 16px !important; padding-right: 14px !important; margin-right: 10px !important; }
+ 
+  .filter-row { flex-direction: column; align-items: stretch; }
+  .filter-pills { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; scrollbar-width: none; }
+  .filter-pills::-webkit-scrollbar { display: none; }
+ 
+  .modal-inner { border-radius: 14px !important; padding: 20px !important; }
+ 
+  .toast { left: 14px !important; right: 14px !important; bottom: 16px !important; text-align: center; }
+}
